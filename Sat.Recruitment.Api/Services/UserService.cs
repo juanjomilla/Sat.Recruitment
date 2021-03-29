@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Sat.Recruitment.Api.Constants;
 using Sat.Recruitment.Api.Models;
 using Sat.Recruitment.Api.Strategies;
 
@@ -20,9 +21,9 @@ namespace Sat.Recruitment.Api.Services
             _repositoryService = repositoryService;
             userTypeStrategies = new Dictionary<string, IUserTypeStrategy>
             {
-                { "normal", normalUser },
-                { "superuser", superUser },
-                { "premiumuser", premiumUser }
+                { UserTypes.NormalUserType, normalUser },
+                { UserTypes.SuperUserType, superUser },
+                { UserTypes.PremiumUserType, premiumUser }
             };
         }
 
