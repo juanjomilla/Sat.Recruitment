@@ -53,7 +53,7 @@ namespace Sat.Recruitment.Test.Services
             var userService = new UserService(_normalUser, _premiumUSer, _superUser, _repositoryServiceMock);
             var newUserStub = new User
             {
-                UserType = "PremiumUser"
+                UserType = "Premium"
             };
 
             // Act
