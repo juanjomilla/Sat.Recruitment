@@ -28,7 +28,7 @@ namespace Sat.Recruitment.Test.Controllers
         {
             // Arrange
             var usersController = new UsersController(_userServiceMock);
-            var requestStub = GetUserMock();
+            var requestStub = GetUserRequestStub();
             _userServiceMock
                 .GetUsers(Arg.Any<Func<User, bool>>())
                 .Returns(new List<User> { new User() });
@@ -46,7 +46,7 @@ namespace Sat.Recruitment.Test.Controllers
         {
             // Arrange
             var usersController = new UsersController(_userServiceMock);
-            var requestStub = GetUserMock();
+            var requestStub = GetUserRequestStub();
             var expectedErrorMessage = "The user is duplicated";
             _userServiceMock
                 .GetUsers(Arg.Any<Func<User, bool>>())
@@ -67,7 +67,7 @@ namespace Sat.Recruitment.Test.Controllers
         {
             // Arrange
             var usersController = new UsersController(_userServiceMock);
-            var requestStub = GetUserMock();
+            var requestStub = GetUserRequestStub();
             _userServiceMock
                 .GetUsers(Arg.Any<Func<User, bool>>())
                 .Returns(new List<User>());
@@ -85,7 +85,7 @@ namespace Sat.Recruitment.Test.Controllers
         {
             // Arrange
             var usersController = new UsersController(_userServiceMock);
-            var requestStub = GetUserMock();
+            var requestStub = GetUserRequestStub();
             _userServiceMock
                 .GetUsers(Arg.Any<Func<User, bool>>())
                 .Returns(new List<User>());
@@ -105,7 +105,7 @@ namespace Sat.Recruitment.Test.Controllers
         {
             // Arrange
             var usersController = new UsersController(_userServiceMock);
-            var requestStub = GetUserMock();
+            var requestStub = GetUserRequestStub();
             _userServiceMock
                 .GetUsers(Arg.Any<Func<User, bool>>())
                 .Returns(new List<User>());
@@ -117,16 +117,16 @@ namespace Sat.Recruitment.Test.Controllers
             await _userServiceMock.Received().CreateUserAsync(Arg.Any<User>());
         }
 
-        private CreateUserRequest GetUserMock()
+        private CreateUserRequest GetUserRequestStub()
         {
             return new CreateUserRequest
             {
-                Address = "",
-                Email = "",
-                Money = 0,
-                Name = "",
-                Phone = "",
-                UserType = ""
+                Address = "Fake street 123",
+                Email = "john.doe@email.com",
+                Money = 150,
+                Name = "John Doe",
+                Phone = "+1 57 466321256",
+                UserType = "Normal"
             };
         }
     }
