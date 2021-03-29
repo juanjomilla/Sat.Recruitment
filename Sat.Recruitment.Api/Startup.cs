@@ -1,15 +1,12 @@
+using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Sat.Recruitment.Api.IoC;
+using Sat.Recruitment.Api.Models.Response;
 
 namespace Sat.Recruitment.Api
 {
@@ -27,6 +24,16 @@ namespace Sat.Recruitment.Api
         {
             services.AddControllers();
             services.AddSwaggerGen();
+            services.AddMvc().ConfigureApiBehaviorOptions(options => {
+                options.InvalidModelStateResponseFactory = actionContext =>
+                {
+                    return CustomValidationErrorResponse(actionContext);
+                };
+            });
+
+            services.AddUserTypeStrategies();
+            services.AddCsvRepository();
+            services.AddUserService();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +59,15 @@ namespace Sat.Recruitment.Api
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private BadRequestObjectResult CustomValidationErrorResponse(ActionContext actionContext)
+        {
+            var errors = actionContext.ModelState
+                .Where(modelError => modelError.Value.Errors.Count > 0)
+                .Select(modelError => modelError.Value.Errors.FirstOrDefault().ErrorMessage);
+
+            return new BadRequestObjectResult(new Result { IsSuccess = false, Errors = string.Join(", ", errors) });
         }
     }
 }
